@@ -174,9 +174,27 @@ export const WorkPage: React.FC<WorkPageProps> = ({ onSelectProject, onNavigateP
                       </div>
                     </div>
 
-                    <div className="pointer-events-none p-12 text-center text-xs font-mono-code text-slate-500 bg-black/40 rounded-xl border border-white/5">
-                      {/* @ts-ignore */}
-                      {project.link ? 'Live Website Preview Available Externally' : 'Demo Application Preview'}
+                    <div className="relative w-full h-[250px] sm:h-[350px] rounded-xl overflow-hidden border border-white/5 bg-black/40">
+                      {project.imageUrl ? (
+                        <img 
+                          src={project.imageUrl} 
+                          alt={project.title} 
+                          className="w-full h-full object-cover object-top"
+                          loading="lazy"
+                        />
+                      ) : project.link ? (
+                        <iframe
+                          src={project.link.startsWith('http') ? project.link : `https://${project.link}`}
+                          title={project.title}
+                          className="w-full h-full border-0 pointer-events-none"
+                          sandbox="allow-scripts allow-same-origin"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="pointer-events-none w-full h-full p-12 flex items-center justify-center text-center text-xs font-mono-code text-slate-500">
+                          Demo Application Preview
+                        </div>
+                      )}
                     </div>
 
                     <div className="absolute inset-0 bg-violet-950/20 backdrop-blur-[2px] opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center">

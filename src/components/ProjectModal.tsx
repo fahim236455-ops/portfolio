@@ -82,8 +82,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                     <span className="w-3 h-3 rounded-full bg-yellow-500/70 shrink-0" />
                     <span className="w-3 h-3 rounded-full bg-green-500/70 shrink-0" />
                     <span className="text-xs font-mono-code text-slate-400 ml-2 truncate block max-w-[200px] sm:max-w-xs">
-                      {/* @ts-ignore */}
-                      {project.link ? new URL(project.link).hostname : `https://${project.id}.concept.fahim.design`}
+                      {project.link 
+                        ? (() => { try { return new URL(project.link.includes('http') ? project.link : `https://${project.link}`).hostname; } catch(e) { return project.link; } })()
+                        : `${project.id}.concept.fahim.design`}
                     </span>
                   </div>
                   {/* View Switcher */}
@@ -110,8 +111,17 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 </div>
 
                 {/* Dynamic Interactive Frame */}
-                {/* @ts-ignore */}
-                {project.link ? (
+                {project.imageUrl ? (
+                  <div className={`mx-auto transition-all duration-300 rounded-lg overflow-hidden border border-white/10 shadow-xl ${
+                    viewMode === 'mobile' ? 'max-w-xs' : 'w-full'
+                  }`}>
+                    <img 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      className="w-full h-auto object-cover object-top"
+                    />
+                  </div>
+                ) : project.link ? (
                   <div className={`mx-auto transition-all duration-300 rounded-lg p-6 bg-[#090912] border border-white/10 shadow-xl flex flex-col items-center justify-center space-y-4 py-16 ${
                     viewMode === 'mobile' ? 'max-w-xs text-center' : 'w-full'
                   }`}>
@@ -121,8 +131,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                       <p className="text-sm text-slate-400 max-w-sm">This is a custom project with an external live website.</p>
                     </div>
                     <a
-                      /* @ts-ignore */
-                      href={project.link}
+                      href={project.link.startsWith('http') ? project.link : `https://${project.link}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-6 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs uppercase tracking-wider transition-colors inline-flex items-center space-x-2"

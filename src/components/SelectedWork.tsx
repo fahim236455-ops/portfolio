@@ -125,24 +125,43 @@ export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectProject }) =
                       </div>
 
                       {/* Mockup Showcase Panel */}
-                      <div className={`p-6 sm:p-10 rounded-xl bg-gradient-to-br ${project.accentColor || 'from-violet-500/20 to-fuchsia-500/20'} border border-white/10 group-hover/preview:scale-[1.01] transition-transform duration-300 space-y-4`}>
-                        <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono-code uppercase font-bold tracking-wider">
-                          {project.mockupData?.badge || 'NEW'}
-                        </div>
-                        <h4 className="font-heading text-xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
-                          {project.mockupData?.heroHeading || project.title.toUpperCase()}
-                        </h4>
-                        <p className="text-slate-300 text-xs sm:text-sm max-w-md">
-                          {project.mockupData?.heroSub || project.shortDescription}
-                        </p>
-
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-white/10 text-center">
-                          {(project.mockupData?.features || ['Responsive', 'Fast', 'Modern']).map((feat, fIdx) => (
-                            <div key={fIdx} className="p-2 rounded bg-black/40 text-[11px] text-slate-200 font-medium">
-                              {feat}
+                      <div className="relative w-full h-[250px] sm:h-[350px] rounded-xl overflow-hidden border border-white/10 group-hover/preview:scale-[1.01] transition-transform duration-300 bg-[#050509]">
+                        {project.imageUrl ? (
+                          <img 
+                            src={project.imageUrl} 
+                            alt={project.title} 
+                            className="w-full h-full object-cover object-top"
+                            loading="lazy"
+                          />
+                        ) : project.link ? (
+                          <iframe
+                            src={project.link.startsWith('http') ? project.link : `https://${project.link}`}
+                            title={project.title}
+                            className="w-full h-full border-0 pointer-events-none"
+                            sandbox="allow-scripts allow-same-origin"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className={`w-full h-full p-6 sm:p-10 bg-gradient-to-br ${project.accentColor || 'from-violet-500/20 to-fuchsia-500/20'} space-y-4`}>
+                            <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono-code uppercase font-bold tracking-wider">
+                              {project.mockupData?.badge || 'NEW'}
                             </div>
-                          ))}
-                        </div>
+                            <h4 className="font-heading text-xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
+                              {project.mockupData?.heroHeading || project.title.toUpperCase()}
+                            </h4>
+                            <p className="text-slate-300 text-xs sm:text-sm max-w-md">
+                              {project.mockupData?.heroSub || project.shortDescription}
+                            </p>
+
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-white/10 text-center">
+                              {(project.mockupData?.features || ['Responsive', 'Fast', 'Modern']).map((feat, fIdx) => (
+                                <div key={fIdx} className="p-2 rounded bg-black/40 text-[11px] text-slate-200 font-medium">
+                                  {feat}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

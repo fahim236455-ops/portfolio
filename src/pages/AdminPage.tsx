@@ -29,7 +29,7 @@ export const AdminPage: React.FC = () => {
 
   // Modal and Notification states
   const [showProjectModal, setShowProjectModal] = useState(false);
-  const [newProject, setNewProject] = useState({ title: '', category: 'Business Website', shortDescription: '', link: '' });
+  const [newProject, setNewProject] = useState({ title: '', category: 'Business Website', shortDescription: '', link: '', imageUrl: '' });
   const [notification, setNotification] = useState<{message: string, type: 'success'|'error'} | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<{isOpen: boolean, title: string, onConfirm: () => void} | null>(null);
 
@@ -210,6 +210,43 @@ export const AdminPage: React.FC = () => {
     });
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        const MAX_DIMENSION = 800;
+        if (width > height && width > MAX_DIMENSION) {
+          height *= MAX_DIMENSION / width;
+          width = MAX_DIMENSION;
+        } else if (height > MAX_DIMENSION) {
+          width *= MAX_DIMENSION / height;
+          height = MAX_DIMENSION;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          setNewProject({ ...newProject, imageUrl: dataUrl });
+        }
+      };
+      if (event.target?.result) {
+        img.src = event.target.result as string;
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleAddProject = async () => {
     if (!newProject.title) {
       showNotification('Project title is required', 'error');
@@ -223,6 +260,7 @@ export const AdminPage: React.FC = () => {
         tag: 'NEW PROJECT',
         accentColor: 'from-violet-600 to-fuchsia-600',
         link: newProject.link,
+        imageUrl: newProject.imageUrl || '',
         createdAt: new Date(),
         mockupData: {
           heroHeading: newProject.title.toUpperCase(),
@@ -237,7 +275,7 @@ export const AdminPage: React.FC = () => {
       });
       showNotification('Demo site added successfully!');
       setShowProjectModal(false);
-      setNewProject({ title: '', category: 'Business Website', shortDescription: '', link: '' });
+      setNewProject({ title: '', category: 'Business Website', shortDescription: '', link: '', imageUrl: '' });
     } catch (error) {
       console.error(error);
       showNotification('Failed to add demo site', 'error');
@@ -906,6 +944,33 @@ export const AdminPage: React.FC = () => {
                   className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-violet-500"
                 />
                 <p className="text-[10px] text-slate-500 mt-1">If provided, the "Test Live Demo" button will open this link in a new tab.</p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">Image (URL or Upload)</label>
+                <div className="flex space-x-2">
+                  <input 
+                    type="url"
+                    placeholder="https://example.com/screenshot.jpg"
+                    value={newProject.imageUrl.startsWith('data:image') ? 'Uploaded Local Image' : newProject.imageUrl}
+                    onChange={(e) => setNewProject({...newProject, imageUrl: e.target.value})}
+                    className="flex-1 bg-black/50 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-violet-500"
+                    disabled={newProject.imageUrl.startsWith('data:image')}
+                  />
+                  <label className="cursor-pointer bg-violet-600/20 text-violet-400 border border-violet-500/30 hover:bg-violet-600/40 px-4 py-3 rounded-xl flex items-center justify-center transition-colors shrink-0">
+                    <span className="text-xs font-bold uppercase tracking-wider">Upload</span>
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                  </label>
+                  {newProject.imageUrl && (
+                    <button 
+                      onClick={() => setNewProject({...newProject, imageUrl: ''})} 
+                      className="bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/40 px-4 py-3 rounded-xl flex items-center justify-center transition-colors shrink-0"
+                    >
+                      <span className="text-xs font-bold uppercase tracking-wider">Clear</span>
+                    </button>
+                  )}
+                </div>
+                <p className="text-[10px] text-slate-500 mt-1">Provide a URL or upload a photo directly from your device.</p>
               </div>
             </div>
 

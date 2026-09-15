@@ -20,7 +20,9 @@ export interface Project {
   keyFeatures: string[];
   technologies: string[];
   accentColor: string;
-  mockupData: ProjectMockupData;
+  mockupData?: ProjectMockupData;
+  link?: string;
+  imageUrl?: string;
 }
 
 export interface ServiceItem {
