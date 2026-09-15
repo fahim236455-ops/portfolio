@@ -1,0 +1,29 @@
+import React from 'react';
+import { Process } from '../components/Process';
+
+export const ProcessPage: React.FC = () => {
+  return (
+    <div className="pt-28 pb-24 bg-[#040406] min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        {/* Page Header */}
+        <div className="space-y-4 max-w-3xl">
+          <div className="inline-flex items-center space-x-2 text-xs font-mono-code uppercase tracking-widest text-violet-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
+            <span>METHODOLOGY &amp; WORKFLOW</span>
+          </div>
+          <h1 className="font-heading text-4xl sm:text-6xl font-extrabold text-white tracking-tight uppercase">
+            HOW IT WORKS
+          </h1>
+          <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
+            A transparent 5-phase execution workflow designed to deliver pristine web products on time.
+          </p>
+        </div>
+
+        {/* Process Timeline Component */}
+        <Process />
+
+      </div>
+    </div>
+  );
+};
