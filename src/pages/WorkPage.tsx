@@ -13,17 +13,15 @@ interface WorkPageProps {
 
 export const WorkPage: React.FC<WorkPageProps> = ({ onSelectProject, onNavigatePage }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [projects, setProjects] = useState<Project[]>(PROJECTS_DATA);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q);
-        const fetched = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as unknown as Project[];
-        if (fetched.length > 0) {
-          setProjects(fetched);
-        }
+        const fetched = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as unknown as Project[];
+        setProjects(fetched);
       } catch (error) {
         console.error("Error fetching projects", error);
       }
@@ -164,8 +162,11 @@ export const WorkPage: React.FC<WorkPageProps> = ({ onSelectProject, onNavigateP
                       </div>
                       <div className="px-3 py-1 rounded-md bg-white/[0.03] border border-white/5 text-[11px] font-mono-code text-slate-400 flex items-center space-x-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        {/* @ts-ignore */}
-                        <span>{project.link ? new URL(project.link).hostname : `https://${project.id}.demo.fahim.design`}</span>
+                        <span>
+                          {project.link 
+                            ? (() => { try { return new URL(project.link.includes('http') ? project.link : `https://${project.link}`).hostname; } catch(e) { return project.link; } })()
+                            : `${project.id}.demo.fahim.design`}
+                        </span>
                       </div>
                       <div className="px-2 py-0.5 rounded bg-violet-500/20 text-[10px] font-mono-code text-violet-300 font-bold uppercase tracking-wider">
                         {/* @ts-ignore */}

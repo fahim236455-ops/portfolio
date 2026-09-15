@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { PROJECTS_DATA } from '../data/portfolioData';
 import { Project } from '../types';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 interface SelectedWorkProps {
   onSelectProject: (project: Project) => void;
 }
 
 export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectProject }) => {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+        const querySnapshot = await getDocs(q);
+        const fetched = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as unknown as Project[];
+        setProjects(fetched);
+      } catch (error) {
+        console.error("Error fetching projects", error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
   return (
     <section id="work" className="py-24 sm:py-32 relative z-10 bg-[#040406]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
@@ -29,7 +47,7 @@ export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectProject }) =
 
         {/* Major Showcase Projects Stack (Large Editorial Cards) */}
         <div className="space-y-12">
-          {PROJECTS_DATA.map((project, index) => {
+          {projects.map((project, index) => {
             return (
               <motion.div
                 key={project.id}
@@ -107,19 +125,19 @@ export const SelectedWork: React.FC<SelectedWorkProps> = ({ onSelectProject }) =
                       </div>
 
                       {/* Mockup Showcase Panel */}
-                      <div className={`p-6 sm:p-10 rounded-xl bg-gradient-to-br ${project.accentColor} border border-white/10 group-hover/preview:scale-[1.01] transition-transform duration-300 space-y-4`}>
+                      <div className={`p-6 sm:p-10 rounded-xl bg-gradient-to-br ${project.accentColor || 'from-violet-500/20 to-fuchsia-500/20'} border border-white/10 group-hover/preview:scale-[1.01] transition-transform duration-300 space-y-4`}>
                         <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono-code uppercase font-bold tracking-wider">
-                          {project.mockupData.badge}
+                          {project.mockupData?.badge || 'NEW'}
                         </div>
                         <h4 className="font-heading text-xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
-                          {project.mockupData.heroHeading}
+                          {project.mockupData?.heroHeading || project.title.toUpperCase()}
                         </h4>
                         <p className="text-slate-300 text-xs sm:text-sm max-w-md">
-                          {project.mockupData.heroSub}
+                          {project.mockupData?.heroSub || project.shortDescription}
                         </p>
 
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-white/10 text-center">
-                          {project.mockupData.features.map((feat, fIdx) => (
+                          {(project.mockupData?.features || ['Responsive', 'Fast', 'Modern']).map((feat, fIdx) => (
                             <div key={fIdx} className="p-2 rounded bg-black/40 text-[11px] text-slate-200 font-medium">
                               {feat}
                             </div>

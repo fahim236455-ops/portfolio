@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { BRAND_CONFIG } from '../data/portfolioData';
+import { auth } from '../lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 interface NavbarProps {
   activeSection: string;
@@ -10,6 +12,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +23,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+      setIsAdmin(!!user && user.email === 'fahim236455@gmail.com');
+    });
+    return unsubscribe;
+  }, []);
+
   const navLinks = [
     { id: 'home', label: 'Home' },
     { id: 'work', label: 'Work' },
@@ -27,6 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => 
     { id: 'about', label: 'About' },
     { id: 'process', label: 'Process' },
     { id: 'contact', label: 'Contact' },
+    ...(isAdmin ? [{ id: 'admin', label: 'Admin Portal' }] : []),
   ];
 
   const handleLinkClick = (id: string) => {

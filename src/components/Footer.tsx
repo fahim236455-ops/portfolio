@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { BRAND_CONFIG, SOCIAL_LINKS } from '../data/portfolioData';
+import { db } from '../lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const currentYear = 2026;
+  const currentYear = new Date().getFullYear();
+  const [socialItems, setSocialItems] = useState([
+    { name: 'LinkedIn', url: SOCIAL_LINKS.linkedin },
+    { name: 'GitHub', url: SOCIAL_LINKS.github },
+    { name: 'Fiverr', url: SOCIAL_LINKS.fiverr },
+    { name: 'Upwork', url: SOCIAL_LINKS.upwork },
+  ]);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'settings', 'social'), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().items) {
+        setSocialItems(docSnap.data().items);
+      }
+    });
+    return () => unsub();
+  }, []);
 
   const links = [
     { id: 'home', label: 'Home' },
@@ -15,13 +32,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     { id: 'services', label: 'Services' },
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' },
-  ];
-
-  const socialItems = [
-    { name: 'LinkedIn', url: SOCIAL_LINKS.linkedin },
-    { name: 'GitHub', url: SOCIAL_LINKS.github },
-    { name: 'Fiverr', url: SOCIAL_LINKS.fiverr },
-    { name: 'Upwork', url: SOCIAL_LINKS.upwork },
   ];
 
   return (
