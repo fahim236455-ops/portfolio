@@ -43,10 +43,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center my-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="flex flex-col items-center justify-center max-w-4xl mx-auto text-center space-y-8">
           
           {/* Main Typography Column */}
-          <div className="lg:col-span-8 space-y-8 text-left">
+          <div className="space-y-8 flex flex-col items-center">
             
             {/* Small Label / Badge */}
             <motion.div
@@ -65,7 +65,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-heading font-extrabold text-4xl sm:text-6xl md:text-7xl xl:text-8xl tracking-tight text-white leading-[1.02] uppercase whitespace-pre-wrap"
+                className="font-heading font-extrabold text-4xl sm:text-6xl md:text-7xl xl:text-8xl tracking-tight text-white leading-[1.02] uppercase whitespace-pre-wrap text-center mx-auto"
               >
                 {heroData.headline}
               </motion.h1>
@@ -74,7 +74,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-heading font-extrabold text-4xl sm:text-6xl md:text-7xl xl:text-8xl tracking-tight text-white leading-[1.02] uppercase"
+                className="font-heading font-extrabold text-4xl sm:text-6xl md:text-7xl xl:text-8xl tracking-tight text-white leading-[1.02] uppercase text-center mx-auto"
               >
                 BUILDING DIGITAL <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400">
@@ -91,7 +91,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="max-w-2xl text-slate-300 text-base sm:text-lg md:text-xl font-normal leading-relaxed whitespace-pre-wrap"
+              className="max-w-2xl text-slate-300 text-base sm:text-lg md:text-xl font-normal leading-relaxed whitespace-pre-wrap text-center mx-auto"
             >
               {heroData?.subheadline ? heroData.subheadline : BRAND_CONFIG.heroSubheadline}
             </motion.p>
@@ -101,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-5 pt-2"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center space-y-4 sm:space-y-0 sm:space-x-5 pt-2 w-full"
             >
               <button
                 onClick={() => onNavigate('work')}
@@ -118,56 +118,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 <span>{BRAND_CONFIG.secondaryCTA}</span>
                 <span className="w-2 h-2 rounded-full bg-violet-400 group-hover:scale-125 transition-transform" />
               </button>
-            </motion.div>
-          </div>
-
-          {/* Right Column: Floating High-Tech UI Fragments & Glass Widget Showcase */}
-          <div className="lg:col-span-4 hidden lg:flex flex-col items-center justify-center relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-full space-y-4 relative"
-            >
-              {/* Glass Card Fragment 1: Performance & Design Shield */}
-              <div className="p-5 rounded-2xl bg-[#090912]/80 border border-white/10 backdrop-blur-md shadow-2xl relative overflow-hidden group hover:border-violet-500/40 transition-all duration-300">
-                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-violet-600/10 rounded-full blur-xl group-hover:bg-violet-600/20 transition-all" />
-                <div className="flex items-center space-x-3 text-violet-400 mb-2">
-                  <Zap className="w-5 h-5 text-amber-400" />
-                  <span className="text-xs font-mono-code font-semibold tracking-wider uppercase text-slate-300">High-Performance Web</span>
-                </div>
-                <div className="text-sm font-semibold text-white">Conversion-Focused Architecture</div>
-                <div className="mt-3 flex items-center space-x-2 text-xs text-slate-400">
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">99+ Lighthouse</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">Responsive</span>
-                </div>
-              </div>
-
-              {/* Glass Card Fragment 2: Live UI Code Preview */}
-              <div className="p-5 rounded-2xl bg-[#08080e]/90 border border-white/10 backdrop-blur-md shadow-2xl space-y-3 transform lg:translate-x-4 hover:border-blue-500/40 transition-all duration-300">
-                <div className="flex items-center justify-between text-xs text-slate-400 font-mono-code border-b border-white/5 pb-2">
-                  <div className="flex space-x-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                  </div>
-                  <span>FahimStudio.ts</span>
-                </div>
-                <div className="font-mono-code text-xs space-y-1 text-slate-300">
-                  <p className="text-violet-400"><span className="text-blue-400">const</span> website = <span className="text-amber-300">createExperience</span>&#40;&#41;&#59;</p>
-                  <p className="text-slate-400 pl-4">.design&#40;<span className="text-emerald-300">"Modern &amp; Minimal"</span>&#41;</p>
-                  <p className="text-slate-400 pl-4">.optimize&#40;<span className="text-emerald-300">"Conversion-First"</span>&#41;&#59;</p>
-                </div>
-              </div>
-
-              {/* Glass Card Fragment 3: Quality Badge */}
-              <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-md flex items-center justify-between text-xs">
-                <div className="flex items-center space-x-2 text-slate-300">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Verified Web Standards</span>
-                </div>
-                <span className="font-mono-code text-violet-400 font-bold">100% Custom</span>
-              </div>
             </motion.div>
           </div>
 
