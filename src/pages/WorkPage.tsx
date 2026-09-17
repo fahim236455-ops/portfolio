@@ -79,6 +79,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({ onSelectProject, onNavigateP
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
+              data-cursor="project"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -147,12 +148,13 @@ export const WorkPage: React.FC<WorkPageProps> = ({ onSelectProject, onNavigateP
                 {/* Live Preview Container */}
                 <div className="lg:col-span-7">
                   <div
+                    data-cursor="image"
                     onClick={() => {
                       /* @ts-ignore */
                       if (project.link) window.open(project.link, '_blank');
                       else onSelectProject(project);
                     }}
-                    className="cursor-pointer group/preview relative rounded-2xl bg-[#050509] border border-white/10 p-4 sm:p-6 hover:border-violet-500/40 transition-all duration-300 space-y-4 shadow-2xl overflow-hidden"
+                    className="cursor-none group/preview relative rounded-2xl bg-[#050509] border border-white/10 p-4 sm:p-6 hover:border-violet-500/40 transition-all duration-300 space-y-4 shadow-2xl overflow-hidden"
                   >
                     <div className="flex items-center justify-between border-b border-white/5 pb-3">
                       <div className="flex space-x-2">

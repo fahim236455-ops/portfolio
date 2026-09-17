@@ -70,13 +70,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigatePage, onSelectProj
             {featuredProjects.map((project) => (
               <div
                 key={project.id}
+                data-cursor="project"
                 className="group p-2 sm:p-4 rounded-[2rem] bg-[#090912] border border-white/10 hover:border-violet-500/40 transition-all duration-300 flex flex-col overflow-hidden hover:shadow-[0_0_50px_rgba(139,92,246,0.15)] relative"
               >
                 <div className={`absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br ${project.accentColor || 'from-violet-500 to-fuchsia-500'} rounded-full blur-[100px] pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity`} />
                 
                 {/* Visual Preview */}
                 <div 
-                  className="relative w-full h-[250px] sm:h-[320px] rounded-2xl overflow-hidden bg-[#050509] border border-white/5 cursor-pointer" 
+                  data-cursor="image"
+                  className="relative w-full h-[250px] sm:h-[320px] rounded-2xl overflow-hidden bg-[#050509] border border-white/5 cursor-none" 
                   onClick={() => { if (project.link) window.open(project.link, '_blank'); else onSelectProject(project); }}
                 >
                   {project.imageUrl ? (

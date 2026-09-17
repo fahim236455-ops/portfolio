@@ -9,6 +9,7 @@ import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
 import { ProjectModal } from './components/ProjectModal';
 import { Footer } from './components/Footer';
+import { OrbitCursor } from './components/OrbitCursor';
 import { Project } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -55,6 +56,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#040406] text-slate-100 flex flex-col font-sans selection:bg-violet-500/30 selection:text-violet-200">
+      <OrbitCursor />
+      
       {/* Navigation Bar */}
       <Navbar activeSection={currentPage === 'home' ? 'hero' : currentPage} onNavigate={handleNavigatePage} />
 
